@@ -1,0 +1,92 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_NAME, SITE_NAME_FULL, SITE_PUBLISHER, t } from "../lib/i18n";
+import { homePath, type Lang } from "../lib/articles";
+import ogDefault from "../assets/og-default.png";
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  switchHref?: string;
+  alternates?: { ja: string; en: string; xDefault?: string };
+  type?: "website" | "article";
+  publishedTime?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  lang,
+  title,
+  description,
+  switchHref,
+  alternates,
+  type = "website",
+  publishedTime,
+  jsonLd,
+} = Astro.props;
+
+const copy = t(lang);
+const pageTitle = title ? `${title} | ${SITE_NAME[lang]}` : SITE_NAME_FULL;
+const pageDescription = description || copy.tagline;
+const site = Astro.site ?? new URL("https://ai-tools-affiliate.vercel.app");
+const canonical = new URL(Astro.url.pathname, site);
+const ogImageUrl = new URL(ogDefault.src, site).href;
+const htmlLang = lang === "ja" ? "ja" : "en";
+
+const jaHref = new URL(alternates?.ja ?? homePath("ja"), site).href;
+const enHref = new URL(alternates?.en ?? homePath("en"), site).href;
+const xDefaultHref = new URL(
+  alternates?.xDefault ?? alternates?.ja ?? homePath("ja"),
+  site,
+).href;
+const otherHref = switchHref ?? (lang === "ja" ? "/en/" : "/");
+const ogLocale = lang === "ja" ? "ja_JP" : "en_US";
+const ogLocaleAlt = lang === "ja" ? "en_US" : "ja_JP";
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="author" content={SITE_PUBLISHER} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" hreflang="ja" href={jaHref} />
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+    <meta property="og:site_name" content={SITE_NAME_FULL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content={String(ogDefault.width)} />
+    <meta property="og:image:height" content={String(ogDefault.height)} />
+    <meta property="og:image:alt" content={SITE_NAME_FULL} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="robots" content="index,follow" />
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+  </head>
+  <body>
+    <Header lang={lang} switchHref={otherHref} />
+    <main>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>
