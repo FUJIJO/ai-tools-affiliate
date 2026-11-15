@@ -1,0 +1,27 @@
+---
+type Props = {
+  href?: string;
+  title?: string | null;
+  class?: string;
+  "data-affiliate"?: string | boolean;
+  [key: string]: unknown;
+};
+
+const { href = "", ...rest } = Astro.props;
+const url = String(href);
+const isExternal = /^https?:\/\//i.test(url);
+const affiliateFlag = rest["data-affiliate"];
+const isAffiliate =
+  affiliateFlag === true ||
+  affiliateFlag === "true" ||
+  /a8\.net/i.test(url);
+
+if (isExternal) {
+  rest.target = "_blank";
+  rest.rel = isAffiliate
+    ? "nofollow sponsored noopener"
+    : "noopener noreferrer";
+}
+---
+
+<a href={href} {...rest}><slot /></a>
