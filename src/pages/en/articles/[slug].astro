@@ -1,0 +1,81 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import AffiliateLink from "../../../components/AffiliateLink.astro";
+import {
+  getArticlesByLang,
+  getCounterpart,
+  getTitle,
+  getDescription,
+  getDate,
+  getDateIso,
+  formatDate,
+  getSlug,
+  articlePath,
+  homePath,
+  buildAlternates,
+  type Article,
+} from "../../../lib/articles";
+import { t } from "../../../lib/i18n";
+import { articleJsonLd } from "../../../lib/schema";
+import ogDefault from "../../../assets/og-default.png";
+
+export async function getStaticPaths() {
+  const articles = await getArticlesByLang("en");
+  return articles.map((article) => ({
+    params: { slug: getSlug(article) },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const lang = "en" as const;
+const { Content } = await render(article);
+const counterpart = await getCounterpart(article);
+const alternates = buildAlternates({
+  lang,
+  currentPath: articlePath(article),
+  counterpartPath: counterpart ? articlePath(counterpart) : undefined,
+});
+const copy = t(lang);
+const date = getDate(article);
+const publishedTime = getDateIso(article);
+const site = Astro.site ?? new URL("https://ai-tools-affiliate.vercel.app");
+const canonical = new URL(articlePath(article), site);
+const image = new URL(ogDefault.src, site).href;
+---
+
+<BaseLayout
+  lang={lang}
+  title={getTitle(article)}
+  description={getDescription(article)}
+  type="article"
+  publishedTime={publishedTime}
+  switchHref={alternates.switchHref}
+  alternates={alternates}
+  jsonLd={articleJsonLd({
+    entry: article,
+    lang,
+    canonical,
+    site,
+    image,
+    articlePath: articlePath(article),
+  })}
+>
+  <article class="article-page">
+    <header>
+      <div class="pr-badge"><span>{copy.pr}</span> {copy.prNote}</div>
+      <h1>{getTitle(article)}</h1>
+      {date && <time class="meta" datetime={publishedTime ?? date.toISOString()}>{formatDate(date, lang)}</time>}
+      {getDescription(article) && <p class="lead">{getDescription(article)}</p>}
+    </header>
+    <div class="prose">
+      <Content components={{ a: AffiliateLink }} />
+    </div>
+    <a class="back-link" href={homePath(lang)}>{copy.back}</a>
+  </article>
+</BaseLayout>

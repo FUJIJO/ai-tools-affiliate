@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  getArticlesByLang,
+  getTitle,
+  getDescription,
+  getDate,
+  formatDate,
+  articlePath,
+  homePath,
+} from "../lib/articles";
+import { SITE_NAME, t } from "../lib/i18n";
+import { websiteJsonLd } from "../lib/schema";
+
+const lang = "ja" as const;
+const articles = await getArticlesByLang(lang);
+const copy = t(lang);
+const site = Astro.site ?? new URL("https://ai-tools-affiliate.vercel.app");
+---
+
+<BaseLayout
+  lang={lang}
+  type="website"
+  switchHref={homePath("en")}
+  alternates={{ ja: homePath("ja"), en: homePath("en"), xDefault: homePath("ja") }}
+  jsonLd={websiteJsonLd(lang, site)}
+>
+  <section class="wrap hero">
+    <h1>{SITE_NAME.ja}</h1>
+    <p>{copy.tagline}</p>
+  </section>
+  <section class="wrap">
+    <h2 class="section-title">{copy.latest}</h2>
+    {articles.length === 0 ? (
+      <p class="empty">{copy.empty}</p>
+    ) : (
+      <div class="article-list">
+        {articles.map((article) => (
+          <a class="card" href={articlePath(article)}>
+            {getDate(article) && (
+              <time datetime={getDate(article)!.toISOString()}>
+                {formatDate(getDate(article), lang)}
+              </time>
+            )}
+            <h2>{getTitle(article)}</h2>
+            {getDescription(article) && <p>{getDescription(article)}</p>}
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
