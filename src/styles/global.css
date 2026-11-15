@@ -1,0 +1,328 @@
+:root {
+  --bg: #f6f1e8;
+  --bg-accent: #efe6d6;
+  --paper: #fffdf8;
+  --ink: #1c1915;
+  --muted: #5d574d;
+  --line: #e4d9c5;
+  --teal: #0f6b5c;
+  --teal-dark: #0a4d42;
+  --teal-soft: #e4f3ef;
+  --pr: #9a3412;
+  --pr-bg: #ffedd5;
+  --shadow: 0 10px 30px rgba(28, 25, 21, 0.06);
+  --radius: 18px;
+  --max: 1120px;
+  --prose: 46rem;
+  --sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP",
+    "Yu Gothic", YuGothic, "Segoe UI", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 420px at 10% -10%, #f3e7c9 0%, transparent 55%),
+    radial-gradient(900px 360px at 100% 0%, #d7eee7 0%, transparent 50%),
+    var(--bg);
+  line-height: 1.75;
+}
+
+a {
+  color: var(--teal);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--teal-dark);
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+.wrap {
+  width: min(100% - 2rem, var(--max));
+  margin-inline: auto;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(14px);
+  background: rgba(246, 241, 232, 0.88);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.25rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand-logo {
+  flex: none;
+  border-radius: 9px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.brand strong {
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.brand span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lang-switch {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.lang-switch a {
+  padding: 0.35rem 0.8rem;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.lang-switch a[aria-current="page"] {
+  background: var(--teal);
+  color: #fff;
+}
+
+.hero {
+  padding: 3.2rem 0 1.5rem;
+}
+
+.hero h1 {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+.hero p {
+  margin: 0;
+  max-width: 38rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.section-title {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.article-list {
+  display: grid;
+  gap: 1rem;
+  padding-bottom: 4rem;
+}
+
+.card {
+  display: block;
+  padding: 1.35rem 1.4rem 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: #c8e4db;
+  color: inherit;
+}
+
+.card time,
+.meta {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.card h2 {
+  margin: 0.35rem 0 0.45rem;
+  font-size: 1.28rem;
+  line-height: 1.4;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.empty {
+  padding: 2rem;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.7);
+  padding: 2rem 0 2.4rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.site-footer p {
+  margin: 0;
+  max-width: 46rem;
+}
+
+.article-page {
+  width: min(100% - 2rem, var(--prose));
+  margin: 2.2rem auto 4rem;
+}
+
+.pr-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: var(--pr-bg);
+  color: var(--pr);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.article-page header h1 {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  line-height: 1.35;
+}
+
+.article-page .lead {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+}
+
+.prose :first-child {
+  margin-top: 0;
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  line-height: 1.35;
+  margin: 2rem 0 0.7rem;
+}
+
+.prose h1 {
+  font-size: 1.7rem;
+}
+
+.prose p,
+.prose li {
+  overflow-wrap: anywhere;
+}
+
+.prose { overflow-wrap: anywhere; }
+.prose > * { overflow-x: auto; }
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  background: var(--paper);
+}
+
+.prose thead {
+  background: var(--teal-soft);
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--line);
+  padding: 0.65rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose .table-wrap {
+  overflow-x: auto;
+  margin: 1.2rem 0;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.2rem;
+}
+
+.prose strong {
+  font-weight: 700;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 2.2rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .header-inner {
+    align-items: flex-start;
+    padding-block: 0.7rem;
+  }
+
+  .hero {
+    padding-top: 2rem;
+  }
+
+  .prose table {
+    font-size: 0.84rem;
+  }
+}
