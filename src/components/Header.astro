@@ -1,0 +1,35 @@
+---
+import { Image } from "astro:assets";
+import { SITE_NAME } from "../lib/i18n";
+import { homePath, type Lang } from "../lib/articles";
+import logo from "../assets/logo.svg";
+
+interface Props {
+  lang: Lang;
+  switchHref: string;
+}
+
+const { lang, switchHref } = Astro.props;
+const jaCurrent = lang === "ja";
+const enCurrent = lang === "en";
+const jaHref = jaCurrent ? Astro.url.pathname : lang === "en" ? switchHref : homePath("ja");
+const enHref = enCurrent ? Astro.url.pathname : lang === "ja" ? switchHref : homePath("en");
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href={homePath(lang)}>
+      <Image src={logo} alt="" width={36} height={36} class="brand-logo" />
+      <span class="brand-text">
+        <strong>{SITE_NAME[lang]}</strong>
+        <span>AIツール活用ラボ / AI Tools Lab</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Language">
+      <div class="lang-switch">
+        <a href={jaHref} aria-current={jaCurrent ? "page" : undefined} lang="ja">日本語</a>
+        <a href={enHref} aria-current={enCurrent ? "page" : undefined} lang="en">English</a>
+      </div>
+    </nav>
+  </div>
+</header>
