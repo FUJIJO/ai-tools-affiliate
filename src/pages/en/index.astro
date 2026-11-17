@@ -15,7 +15,7 @@ import { websiteJsonLd } from "../../lib/schema";
 const lang = "en" as const;
 const articles = await getArticlesByLang(lang);
 const copy = t(lang);
-const site = Astro.site ?? new URL("https://ai-tools-affiliate.vercel.app");
+const site = Astro.site ?? new URL("https://ai-tools-affiliate-kappa.vercel.app");
 ---
 
 <BaseLayout

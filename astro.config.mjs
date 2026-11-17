@@ -3,7 +3,7 @@ import sitemap from "@astrojs/sitemap";
 import { externalLinks } from "./src/integrations/external-links.mjs";
 
 export default defineConfig({
-  site: "https://ai-tools-affiliate.vercel.app",
+  site: "https://ai-tools-affiliate-kappa.vercel.app",
   trailingSlash: "always",
   output: "static",
   integrations: [

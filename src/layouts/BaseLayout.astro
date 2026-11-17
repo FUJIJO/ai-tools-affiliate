@@ -31,7 +31,7 @@ const {
 const copy = t(lang);
 const pageTitle = title ? `${title} | ${SITE_NAME[lang]}` : SITE_NAME_FULL;
 const pageDescription = description || copy.tagline;
-const site = Astro.site ?? new URL("https://ai-tools-affiliate.vercel.app");
+const site = Astro.site ?? new URL("https://ai-tools-affiliate-kappa.vercel.app");
 const canonical = new URL(Astro.url.pathname, site);
 const ogImageUrl = new URL(ogDefault.src, site).href;
 const htmlLang = lang === "ja" ? "ja" : "en";

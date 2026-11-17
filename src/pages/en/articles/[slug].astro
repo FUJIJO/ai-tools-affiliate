@@ -44,7 +44,7 @@ const alternates = buildAlternates({
 const copy = t(lang);
 const date = getDate(article);
 const publishedTime = getDateIso(article);
-const site = Astro.site ?? new URL("https://ai-tools-affiliate.vercel.app");
+const site = Astro.site ?? new URL("https://ai-tools-affiliate-kappa.vercel.app");
 const canonical = new URL(articlePath(article), site);
 const image = new URL(ogDefault.src, site).href;
 ---
